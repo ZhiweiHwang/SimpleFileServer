@@ -1,0 +1,23 @@
+{
+	"Comment" : "Config.json helps you easily manage the environment specific settings ...", 
+	"filefolder" : {
+        "Comment" : "The root path...",
+		"PATH" : "./"
+	},
+	"site" :{
+		"Comment" : "The site name...",
+		"title" : "Simple File Server"
+	},
+	"filefolder" : {
+        "Comment" : "The root path...",
+		"PATH" : "./"
+	},
+	"admin" : {
+		"Comment" : "Management Information...",
+		"user" : "admin",
+		"password" : "admin",
+		"safe_num" : 0,
+		"mail" : "joeyhwong@hotmail.com",
+		"developer_website" : "https://github.com/ZhiweiHwang"
+	}
+}
