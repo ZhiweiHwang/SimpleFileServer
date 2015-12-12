@@ -8,10 +8,6 @@
 		"Comment" : "The site name...",
 		"title" : "Simple File Server"
 	},
-	"filefolder" : {
-        "Comment" : "The root path...",
-		"PATH" : "./"
-	},
 	"admin" : {
 		"Comment" : "Management Information...",
 		"user" : "admin",
