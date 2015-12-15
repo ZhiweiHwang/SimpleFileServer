@@ -44,6 +44,9 @@ $developerweb = $obj['admin']['developer_website'];
 $meurl = $_SERVER['PHP_SELF'];
 $me = explode('/',$meurl);
 $me = end($me);
+$stime = date('Y-m-d');
+$stime = str_replace("\n","",$stime);
+$stime = iconv("UTF-8", "GBK",$stime);
 
 if(isset($_REQUEST['op'])){
 	$op = $_REQUEST['op'];
@@ -372,13 +375,10 @@ function up(){
 /****************************************************************/
 
 function bupload($filepath, $folder){
-	global $meurl;
+	 global $meurl, $stime;
      $nfolder = $folder;
      $filepath = iconv("UTF-8", "GBK", $filepath);
      $folder = iconv("UTF-8", "GBK", $folder);
-     $stime = date('Y-m-d');
-     $stime = str_replace("\n","",$stime);
-     $stime = iconv("UTF-8", "GBK",$stime);
      if($filepath!==""){
 		set_time_limit (24 * 60 * 60); 
 	    if (!file_exists($folder)){
@@ -404,13 +404,10 @@ function bupload($filepath, $folder){
 /****************************************************************/
 
 function yupload($url, $folder, $unzip, $delzip){
-	global $meurl;
+	global $meurl, $stime;
     $nfolder = $folder;
     $url = iconv("UTF-8", "GBK", $url);
     $folder = iconv("UTF-8", "GBK", $folder);
-    $stime = date('Y-m-d');
-    $stime = str_replace("\n","",$stime);
-    $stime = iconv("UTF-8", "GBK",$stime);
     if($url!==""){
         set_time_limit (24 * 60 * 60); 
   	    if (!file_exists($folder)){
@@ -474,7 +471,7 @@ function yupload($url, $folder, $unzip, $delzip){
 /****************************************************************/
 
 function upload($upfile,$ndir,$unzip,$delzip){
-    global $meurl, $folder;
+    global $meurl, $folder, $stime;
     $nfolder = $folder;
     $nndir = $ndir;
     $ndir = iconv("UTF-8", "GBK", $ndir);
@@ -485,11 +482,12 @@ function upload($upfile,$ndir,$unzip,$delzip){
 	  	if (!file_exists($ndir)){
 	    	mkdir($ndir, 0755);
 	    }
-	    $i = 1;
+		$i = 1;
+		$newfile = $nndir. $stime . '_' .$upfile['name'][$i-1];
 	    while (count($upfile['name']) >= $i){
-	    	$dir = iconv("UTF-8", "GBK", $nndir.$upfile['name'][$i-1]);
+	    	$dir = iconv("UTF-8", "GBK", $newfile);
 	        if(@copy($upfile['tmp_name'][$i-1],$dir)){
-	            echo "Upload ".$nndir.$upfile['name'][$i-1]." succeed\n<br>";
+	            echo "Upload ".$newfile." succeed\n<br>";
 	            $end = explode('.', $upfile['name'][$i-1]);
 	            if(end($end)=="zip" && isset($unzip) && $unzip == "checkbox"){
 	            	if(class_exists('ZipArchive')){
@@ -499,14 +497,14 @@ function upload($upfile,$ndir,$unzip,$delzip){
 	                        $zip->close();
 	                        echo $upfile['name'][$i-1]." has been extracted to ".$nndir."<br>";
 	                        if(isset($delzip) && $delzip == "checkbox"){
-	            	            if(unlink($dir.$upfile['name'][$i-1])){
+	            	            if(unlink($dir)){
 	            	                echo $upfile['name'][$i-1]." delete succeed<br>";
 	                            }else{
 	                                echo $upfile['name'][$i-1].("<span class=\"error\">delete failed</span><br>");
 	                            }
 	                        }
 	                    }else{
-	                        echo("<span class=\"error\">>Unable to extract: ".$nndir.$upfile['name'][$i-1]."</span><br>");
+	                        echo("<span class=\"error\">>Unable to extract: ".$newfile."</span><br>");
 	                    }
 	                }else{
 	            	    echo("<span class=\"error\">PHP on this server does not support ZipArchive, unable to extract the zip files!</span><br>");
